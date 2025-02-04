@@ -4,13 +4,13 @@ use std::fs::read_to_string;
 fn main() {
     let mut args = env::args();
     let my_name = args.next().unwrap();
-    let mut lines_used: i32 = 10;
+    let mut lines_used:usize = 10;
 
     for arg in args {
         if arg.starts_with("-"){
-            let lines_used: i32 = arg[1..].parse();
-        }else{
-            let lines_used= 10;
+            if let Ok(num) = arg[1..].parse::<usize>(){
+                lines_used = num;
+            }
         }
         match print_lines(arg.as_str(), lines_used.try_into().unwrap()) {
             Ok(_) => {}

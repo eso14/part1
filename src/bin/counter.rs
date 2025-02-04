@@ -2,12 +2,12 @@ use std::env;
 use std::fs::read_to_string;
 
 fn main() {
-    let args: Vec = env::args().skip(1).collect();
+    let args: Vec<String> = env::args().skip(1).collect();
     let mut show_words = true;
     let mut show_chars = true;
     let mut show_lines= true;
 
-    let my_name = args.next().unwrap();
+    let my_name = env::args().next().unwrap();
     for arg in args {
         if arg.starts_with("-"){
             show_words = arg.contains("w");
