@@ -2,10 +2,9 @@ use std::{env, io, process};
 use std::ffi::CString;
 use std::io::{stdin, Write};
 use std::path::Path;
-use std::process::{exit, ExitCode};
 use nix::fcntl::{open, OFlag};
 use nix::sys::stat::Mode;
-use nix::unistd::{chdir, dup2, execvp, fork, getpid, ForkResult};
+use nix::unistd::{chdir, dup2, execvp, fork, ForkResult};
 use nix::sys::wait::waitpid;
 
 fn main() {
@@ -76,6 +75,10 @@ fn main() {
                     if argv.is_empty() {
                         continue;
                     }
+                    if let Err(e) = execvp(&argv[0], &argv) {
+                        println!("Error executing {}: {}", input, e);
+                        process::exit(1);
+                    }
                     if let Some(file) = input_file {
                         if let Ok(fd) = open(file, nix::fcntl::OFlag::O_RDONLY, Mode::empty()) {
                             let _ = dup2(fd, 0);
@@ -92,10 +95,7 @@ fn main() {
                             process::exit(1);
                         }
                     }
-                    if let Err(e) = execvp(&argv[0], &argv) {
-                        println!("Error executing {}: {}", input, e);
-                        process::exit(1);
-                    }
+                    
                 }
             }
         }
