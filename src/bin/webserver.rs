@@ -25,6 +25,22 @@ fn handle_client(mut stream: TcpStream) {
     }
     
     println!("Received request from {}:\n{}", peer_addr, request);
+    
+    let requested_file = request.lines()
+        .next()
+        .and_then(|line| line.split_whitespace().nth(1))
+        .unwrap_or("/");
+    
+    let response_body = format!(
+        "<html>\n<body>\n<h1>Message received</h1>\nRequested file: {}<br>\n</body>\n</html>\n",
+        requested_file
+    );
+    let response = format!(
+        "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Length: {}\r\n\r\n{}",
+        response_body.len(), response_body
+    );
+    
+    stream.write_all(response.as_bytes()).expect("Failed to send response");
 }
 
 fn main() {
