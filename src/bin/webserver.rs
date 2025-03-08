@@ -80,16 +80,6 @@ fn handle_client(mut stream: TcpStream, counter: Arc<Mutex<RequestCounter>>) {
         }
     }
 
-    
-
-   
-    
-    let response_body = format!(
-        "<html>\n<body>\n<h1>Message received</h1>\nRequested file: {}<br>\n</body>\n</html>\n", requested_file);
-    let response = format!(
-        "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Length: {}\r\n\r\n{}", response_body.len(), response_body);
-        
-    stream.write_all(response.as_bytes()).expect("Failed to send response");
     stream.flush().expect("Failed to flush stream");
 
     let counter_lock = counter.lock().unwrap();
