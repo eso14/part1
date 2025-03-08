@@ -36,9 +36,6 @@ fn handle_client(mut stream: TcpStream, counter: Arc<Mutex<RequestCounter>>) {
     
     println!("Client IP Address: {} \n Read {} bytes from{} \n :\n{}", peer_addr, request.len(), peer_addr, request);
 
-    let mut counter_lock = counter.lock().unwrap();
-    counter_lock.total_requests += 1;
-    drop(counter_lock);
 
     let requested_file = request.lines()
     .next()
@@ -48,6 +45,15 @@ fn handle_client(mut stream: TcpStream, counter: Arc<Mutex<RequestCounter>>) {
     let curr_dir = std::env::current_dir().expect("Failed to get current directory");
     let requested_path = Path::new(requested_file.strip_prefix("/").unwrap_or(requested_file));
     let full_path = curr_dir.join(requested_path);
+
+    let mut counter_lock = counter.lock().unwrap();
+    counter_lock.total_requests += 1;
+
+    let valid_request = full_path.exists() && !full_path.is_dir() && full_path.starts_with(&curr_dir);
+    if valid_request {
+        counter_lock.valid_requests += 1;
+    }
+    
 
     if !full_path.exists() {
         let response = "HTTP/1.1 404 Not Found\r\n\r\nFile not found";
@@ -60,10 +66,6 @@ fn handle_client(mut stream: TcpStream, counter: Arc<Mutex<RequestCounter>>) {
         return;
     }
 
-    
-    let mut counter_lock = counter.lock().unwrap();
-    counter_lock.valid_requests += 1;
-    drop(counter_lock);
     
 
     match fs::read_to_string(&full_path) {
