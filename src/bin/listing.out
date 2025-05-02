@@ -1,1 +1,15 @@
--rw------- 1 elianaoden elianaoden 0 May  2 14:53 listing.out
+total 52K
+-rw------- 1 elianaoden elianaoden    0 May  2 15:18 listing.out
+-rw-r--r-- 1 elianaoden elianaoden 3.4K May  2 15:17 vssh.rs
+-rw-r--r-- 1 elianaoden elianaoden   81 Apr 28 11:25 cmd.rs
+-rw-r--r-- 1 elianaoden elianaoden 1.4K Apr 28 11:25 counter.rs
+-rw-r--r-- 1 elianaoden elianaoden  318 Apr 28 11:25 destroy.rs
+-rw-r--r-- 1 elianaoden elianaoden  201 Apr 28 11:25 dir.rs
+-rw-r--r-- 1 elianaoden elianaoden  311 Apr 28 11:25 duplicate.rs
+-rw-r--r-- 1 elianaoden elianaoden  703 Apr 28 11:25 findtext.rs
+-rw-r--r-- 1 elianaoden elianaoden  304 Apr 28 11:25 newname.rs
+-rw-r--r-- 1 elianaoden elianaoden   42 Apr 28 11:25 newtest1
+-rw-r--r-- 1 elianaoden elianaoden  961 Apr 28 11:25 order.rs
+-rw-r--r-- 1 elianaoden elianaoden  853 Apr 28 11:25 start.rs
+-rw-r--r-- 1 elianaoden elianaoden 1.9K Apr 28 11:25 webget.rs
+-rw-r--r-- 1 elianaoden elianaoden 3.5K Apr 28 11:25 webserver.rs

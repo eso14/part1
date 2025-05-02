@@ -84,9 +84,9 @@ fn main() {
                             process::exit(1);
                         }
                     }
-                    let argv: Vec<CString> = input
-                    .split_whitespace()
-                    .map(|arg| CString::new(arg).unwrap())
+                    let argv: Vec<CString> = parts
+                    .iter()
+                    .map(|arg| CString::new(*arg).unwrap())
                     .collect();
 
                     if argv.is_empty() {
