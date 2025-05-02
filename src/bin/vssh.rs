@@ -40,14 +40,14 @@ fn main() {
 
         let mut i = 0;
         while i< parts.len(){
-            if parts[i] == "<" && i + 1 < parts.len(){
+            if parts[i] == "<" && (i + 1 < parts.len()){
                 input_file = Some(parts.remove(i+1));
                 parts.remove(i);
-            }else if parts[i] == ">" && i+1 < parts.len(){
+            }else if parts[i] == ">" && (i+1 < parts.len()){
                 output_file = Some(parts.remove(i+1));
                 parts.remove(i);
             }else{
-                i +=1;
+                i += 1;
             }
         }
 
@@ -68,17 +68,6 @@ fn main() {
                     
                 }
                 ForkResult::Child => {
-                    let mut argv = Vec::new();
-                    for arg in [input.split_whitespace(), "src/bin/vssh.rs"] {
-                    argv.push(CString::new(arg).unwrap());
-                    }
-                    if argv.is_empty() {
-                        continue;
-                    }
-                    if let Err(e) = execvp(&argv[0], &argv) {
-                        println!("Error executing {}: {}", input, e);
-                        process::exit(1);
-                    }
                     if let Some(file) = input_file {
                         if let Ok(fd) = open(file, nix::fcntl::OFlag::O_RDONLY, Mode::empty()) {
                             let _ = dup2(fd, 0);
@@ -95,6 +84,19 @@ fn main() {
                             process::exit(1);
                         }
                     }
+                    let argv: Vec<CString> = input
+                    .split_whitespace()
+                    .map(|arg| CString::new(arg).unwrap())
+                    .collect();
+
+                    if argv.is_empty() {
+                        continue;
+                    }
+                    if let Err(e) = execvp(&argv[0], &argv) {
+                        println!("Error executing {}: {}", input, e);
+                        process::exit(1);
+                    }
+                   
                     
                 }
             }
