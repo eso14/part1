@@ -69,7 +69,7 @@ fn main() {
                 }
                 ForkResult::Child => {
                     let mut argv = Vec::new();
-                    for arg in [input, "src/bin/vssh.rs"] {
+                    for arg in [input.split_whitespace(), "src/bin/vssh.rs"] {
                     argv.push(CString::new(arg).unwrap());
                     }
                     if argv.is_empty() {
